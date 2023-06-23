@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@100&display=swap" rel="stylesheet">
+  <title>Employee info</title>
+</head>
+<style>
+  * {
+    font-family: 'Mukta', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    background: #121212;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+  }
+  form {
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    
+  }
+  main {
+    color: white;
+  }
+  h1 {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #E8E8E8;
+    height: 10%;
+  }
+  label {
+    display: block;
+    height: 12%;
+  }
+  input,textarea {
+    background: #313341;
+    outline: none;
+    transition: all 0.5s;
+    border-radius: 5px;
+    color: white;
+    padding: 8px;
+    font-size: 4vmin;
+  }
+  input:focus,textarea:focus {
+    border: 1px solid lightgray;
+  }
+  span {
+    display: block;
+  }
+  #ageInput {
+    position: relative;
+  }
+  #ageInput::before {
+    content: "18";
+    position: absolute;
+    left: -4.5vw;
+  }
+  #ageInput::after {
+    content: "25";
+    position: absolute;
+    right: -4.5vw;
+  }
+  #submitBtn {
+    padding: 10px;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 25vw;
+    background: #FC196463;
+    border: 1px solid #FC1964
+  }
+</style>
+<body>
+    <h1>EMPLOYEE INFO</h1>
+<form action="hshs.html" method="post">
+  <main>
+    <label><span>Username:</span><input id="username" type="text"></label>
+    <label><span>Address: </span><textarea id="address"></textarea></textarea><br></label>
+    <label><span>DOB:</span> <input type="date" id="DOB"><br></label>
+   <label><input type="file" id="imageInput" name="image" accept="image/*"><br></label>
+    <label><span>employee email:</span> <input type="email" id="email"><br></label>
+    <label><span>Previous employer web-address:</span><input id="url" type="url"><br></label>
+    <label><span>age:</span><input type="range" id="ageInput" min="18" max="25"><br><i>Selected age:</i><b class="ageDisplay">(NA)</b></label>
+    <label for=""><input type="submit" value="Submit" id="submitBtn"></label>
+  </main>
+</form>
+</body>
+<script>
+  let ageDisplay = document.querySelector('.ageDisplay')
+  function setBodySizeToViewport() {
+  var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+  document.body.style.height = windowHeight + "px";
+  document.body.style.width = windowWidth + "px";
+}
+
+// Call the function initially to set the body size to the viewport
+setBodySizeToViewport();
+
+let usernameInput = document.getElementById('username')
+let emailInput = document.getElementById('email')
+let dobInput = document.getElementById('DOB')
+let ageInput = document.getElementById('ageInput')
+let addressInput = document.getElementById('address')
+let urlInput = document.getElementById('url')
+ageInput.addEventListener('input',()=>{
+  ageDisplay.textContent = ageInput.value
+})
+
+document.querySelector('form').addEventListener('submit',(e)=>{
+  e.preventDefault()
+})
+
+document.getElementById('submitBtn').addEventListener('click',()=>{
+  var fileInput = document.getElementById("imageInput");
+  var file = fileInput.files[0]; // Get the selected image file
+
+  if (file) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      var imageData = e.target.result; // Get the base64-encoded image data
+      document.querySelector('html').innerHTML = `<h1>Thank you for submitting your response, our team will soon review it!</h1><h3>submitted response is as follows:</h3><hr>
+      <b>Username:\t</b>${usernameInput.value}<br>
+      <b>Address:</b>\t${addressInput.value}<br>
+      <b>DOB:</b>\t${dobInput.value}<br>
+      <b>Image:</b>\t<img src=${imageData} height='200' width='200'><br>
+      <b>Email:</b>\t${emailInput.value}<br>
+      <b>previous employer web address:</b>\t${urlInput.value}<br>
+      <b>Age:</b>\t${ageInput.value}`
+    };
+
+    reader.readAsDataURL(file); // Read the image file as a data URL
+  }
+})
+</script>
+</html>
